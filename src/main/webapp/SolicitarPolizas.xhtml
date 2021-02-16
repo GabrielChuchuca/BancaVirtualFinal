@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<style>
+.cabecera {
+	background-color: #00aae4;
+}
+</style>
+</h:head>
+<h:body>
+	<ui:composition template="template/templateIndexCajero.xhtml">
+		<ui:define name="title">LISTADO DE LAS POLIZAS DISPONIBLES </ui:define>
+		<ui:param name="nombre" value="#{loginBean.usuario}" />
+		<ui:define name="content">
+
+
+			<h:form id="mainForm">
+				<h:dataTable value="#{polizasBean.getListasPolizas()}" var="poliza"
+					class="table">
+
+
+					<h:column headerText="Dia minimo">
+						<f:facet name="header">Dia minimo</f:facet>
+						<h:outputText value="#{poliza.diasMinimo}" />
+					</h:column>
+
+					<h:column headerText="Dia Maximo">
+						<f:facet name="header">Dia maximo</f:facet>
+						<h:outputText value="#{poliza.diasMaximo}" />
+					</h:column>
+
+					<h:column headerText="Tasa de Interes %">
+						<f:facet name="header">Tasa de interes %</f:facet>
+						<h:outputText value="#{poliza.tasaInteres}" />
+					</h:column>
+
+
+
+				</h:dataTable>
+			</h:form>
+
+			<h:form id="mainForm1" value="#{polizasBean.getListasPolizas()}"
+				var="poliza">
+				<div class="form-group">
+					<label>Ingrese Cedula</label>
+					<h:inputText id="cedddd" value="#{cajeroBean.cliente.cedula}"
+						maxlength="10" class="form-control">
+						<f:ajax event="blur" render="Datos Cuenta panel Monto"
+							execute="dep ret caj #{cajeroBean.cargarTransacciones()}" />
+					</h:inputText>
+					<br /> <label>Cliente:</label><br />
+					<h:outputText id="Datos" value="#{cajeroBean.valCedula()}" />
+					<br /> <label>Numero de Cuenta:</label><br />
+					<h:outputText id="Cuenta" value="#{cajeroBean.numCuenta()}" />
+				</div>
+			</h:form>
+			<h:form role=" form" id="solicitud">
+
+				<div class="form-group">
+					<label>Ingrese dias</label>
+					<h:inputText value="" maxlength="10" class="form-control"
+						required="true">
+					</h:inputText>
+				</div>
+				<div class="form-group">
+					<label>Ingrese valor de Poliza</label>
+					<h:inputText value="#{polizasBean.poliza.diasMaximo}"
+						maxlength="10" class="form-control" required="true">
+						<f:ajax event="blur" render="valueError" />
+					</h:inputText>
+					<h:commandButton value="Subir Cedula"
+						actionListener="#{cajeroBean.registrar()}" update="message"
+						class="btn btn-success btn-lg">
+
+					</h:commandButton><br /><br />
+					<h:commandButton value="Subir Plantilla"
+						actionListener="#{cajeroBean.registrar()}" update="message"
+						class="btn btn-success btn-lg">
+
+					</h:commandButton><br /><br />
+					<h:commandButton value="Solicitar Poliza"
+						actionListener="#{cajeroBean.registrar()}" update="message"
+						class="btn btn-success btn-lg">
+
+					</h:commandButton>
+					<br />
+					<br /> <label>Interes por dias:</label><br />
+					<h:outputText id="tasa" value="#{polizasBean.poliza.tasaInteres}" /><br />
+
+					<br /> <label>Monto a Pagar:</label><br />
+					<h:outputText id="Datos1" value="" />
+				</div>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

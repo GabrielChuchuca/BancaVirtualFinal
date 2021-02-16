@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<style>
+.cabecera {
+	background-color: #00aae4;
+}
+</style>
+</h:head>
+<h:body>
+	<ui:composition template="template/templateIndexCajero.xhtml">
+		<ui:define name="title">LISTADO DE CLIENTES  BLOQUEADOAS: </ui:define>
+		<ui:param name="nombre" value="#{loginBean.usuario}" />
+		<ui:define name="content">
+
+
+			<h:form id="mainForm">
+				<h:dataTable value="#{crearCliente.obtenerClientesBloqueados()}"
+							var="cliente" selectionMode="single" rendered="#{crearCliente.obtenerClientesBloqueados().size()>0}"
+							rowKey="#{cliente.cedula}" selection="#{crearCliente.clienteSelecionado}"
+							class="table">
+					
+							
+					<h:column headerText="Cedula">
+						<f:facet name="header">Cedula</f:facet>
+						<h:outputText value="#{cliente.cedula}" />
+					</h:column>
+
+					<h:column headerText="Nombre">
+						<f:facet name="header">Nombre</f:facet>
+						<h:outputText value="#{cliente.nombre}" />
+					</h:column>
+
+					<h:column headerText="Correo">
+						<f:facet name="header">Correo</f:facet>
+						<h:outputText value="#{cliente.correo}" />
+					</h:column>
+
+					<h:column headerText="Usuario">
+						<f:facet name="header">Usuario</f:facet>
+						<h:outputText value="#{cliente.usuario}" />
+					</h:column>
+					<h:column headerText="Estado">
+						<f:facet name="header">Estado</f:facet>
+						<h:outputText value="#{cliente.estado}" />
+					</h:column>
+
+
+					<h:column>
+						<f:facet name="header">Desbloquear Cuenta</f:facet>
+						<h:commandButton
+							action="#{crearCliente.selecionarclienteb(cliente)}"
+							value="Desbloquear" class="btn btn-success" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
