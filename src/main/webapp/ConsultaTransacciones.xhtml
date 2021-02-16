@@ -82,7 +82,26 @@
 			<h:panelGroup id="Trans">
 				<h:form id="tels">
 					<h1>LISTADO DE TRANSACCIONES</h1>
-	
+					<h:dataTable id="tblTransacciones"
+						value="#{clientesBean.lstTransacciones}" var="transaccion"
+						class="table table-bordered table-hover table-striped">
+						<h:column>
+							<f:facet name="header">FECHA</f:facet>
+						#{transaccion.fecha}
+						</h:column>
+						<h:column>
+							<f:facet name="header">MONTO</f:facet>
+						#{transaccion.monto}
+						</h:column>
+						<h:column>
+							<f:facet name="header">TIPO</f:facet>
+						#{transaccion.tipo}
+						</h:column>
+						<h:column>
+							<f:facet name="header">SALDO CUENTA</f:facet>
+						#{transaccion.saldoCuenta}
+						</h:column>
+					</h:dataTable>
 				</h:form>
 			</h:panelGroup>
 		</ui:define>
