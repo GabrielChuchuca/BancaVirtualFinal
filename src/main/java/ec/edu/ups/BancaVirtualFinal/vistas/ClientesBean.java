@@ -23,6 +23,7 @@ import org.primefaces.event.MoveEvent;
 import ec.edu.ups.BancaVirtualFinal.modelo.Cliente;
 import ec.edu.ups.BancaVirtualFinal.modelo.CuentaDeAhorro;
 import ec.edu.ups.BancaVirtualFinal.modelo.SesionCliente;
+import ec.edu.ups.BancaVirtualFinal.modelo.SolicitudPoliza;
 import ec.edu.ups.BancaVirtualFinal.modelo.Transaccion;
 import ec.edu.ups.BancaVirtualFinal.on.GestionUsuarioLocal;
 
@@ -64,6 +65,11 @@ public class ClientesBean {
 		private CuentaDeAhorro cuentaDeAhorro;
 		private CuentaDeAhorro buscarCuentaDeAhorro;
 		private Cliente idcliente;
+		
+		private SolicitudPoliza solicitudPoliza;
+		private Double interes;
+		private Double valorp;
+		private int dias;
 
 		/**
 		 * Metodo que permite inicializar atributos y metodos al momento que se llama a
@@ -80,6 +86,7 @@ public class ClientesBean {
 			idcliente = new Cliente();
 //			lstCreditosAprobados = new ArrayList<Credito>();  
 //			solicitudDeCredito = new SolicitudDeCredito();
+			solicitudPoliza = new SolicitudPoliza();
 		}
 
 		/**
@@ -107,6 +114,124 @@ public class ClientesBean {
 		 */
 		public GestionUsuarioLocal getGestionUsuarios() {
 			return gestionUsuarios;
+		}
+		
+		/**
+		 * @return the garante
+		 */
+		public Cliente getGarante() {
+			return garante;
+		}
+
+		/**
+		 * @param garante the garante to set
+		 */
+		public void setGarante(Cliente garante) {
+			this.garante = garante;
+		}
+
+		/**
+		 * @return the cedulaGarante
+		 */
+		public String getCedulaGarante() {
+			return cedulaGarante;
+		}
+
+		/**
+		 * @param cedulaGarante the cedulaGarante to set
+		 */
+		public void setCedulaGarante(String cedulaGarante) {
+			this.cedulaGarante = cedulaGarante;
+		}
+
+		/**
+		 * @return the arCedula
+		 */
+		public InputStream getArCedula() {
+			return arCedula;
+		}
+
+		/**
+		 * @param arCedula the arCedula to set
+		 */
+		public void setArCedula(InputStream arCedula) {
+			this.arCedula = arCedula;
+		}
+
+		/**
+		 * @return the arPlanillaServicios
+		 */
+		public InputStream getArPlanillaServicios() {
+			return arPlanillaServicios;
+		}
+
+		/**
+		 * @param arPlanillaServicios the arPlanillaServicios to set
+		 */
+		public void setArPlanillaServicios(InputStream arPlanillaServicios) {
+			this.arPlanillaServicios = arPlanillaServicios;
+		}
+
+		/**
+		 * @return the arRolDePagos
+		 */
+		public InputStream getArRolDePagos() {
+			return arRolDePagos;
+		}
+
+		/**
+		 * @param arRolDePagos the arRolDePagos to set
+		 */
+		public void setArRolDePagos(InputStream arRolDePagos) {
+			this.arRolDePagos = arRolDePagos;
+		}
+
+		/**
+		 * @return the mensajeGarante
+		 */
+		public String getMensajeGarante() {
+			return mensajeGarante;
+		}
+
+		/**
+		 * @param mensajeGarante the mensajeGarante to set
+		 */
+		public void setMensajeGarante(String mensajeGarante) {
+			this.mensajeGarante = mensajeGarante;
+		}
+
+		/**
+		 * @return the codigoCredito
+		 */
+		public int getCodigoCredito() {
+			return codigoCredito;
+		}
+
+		/**
+		 * @param codigoCredito the codigoCredito to set
+		 */
+		public void setCodigoCredito(int codigoCredito) {
+			this.codigoCredito = codigoCredito;
+		}
+
+		public String crearSolicitudPoliza() throws Exception {
+			System.out.println("ENTRO EN LA SOLICITUD");		
+			solicitudPoliza.setCliente(gestionUsuarios.buscarCliente(buscarCuentaDeAhorro.getCliente().getCedula()));
+			solicitudPoliza.setPoliza(gestionUsuarios.guardaringresodias(dias));	
+			solicitudPoliza.setEstado("S");
+			solicitudPoliza.setDias(35);		
+			solicitudPoliza.setMonto(solicitudPoliza.getMonto());
+			//Poliza p = polizaON.guardaringresodias(dias);
+			
+			solicitudPoliza.setCedula(gestionUsuarios.toByteArray(arCedula));
+			solicitudPoliza.setPlanilla(gestionUsuarios.toByteArray(arPlanillaServicios));
+			if(gestionUsuarios.verificarSolicitudSolicitando(cedulaParametro)) { 
+				gestionUsuarios.guardarSolicitudPoliza(solicitudPoliza);
+				addMessage("Confirmacion", "Solicitud ENVIADA");
+			}else { 
+				addMessage("Atencion", "Usted ya ha enviado una solicitud de POLIZA para su aprovacion");
+			}
+			return "SolicitudPoliza";
 		}
 
 		/**
@@ -515,6 +640,64 @@ public class ClientesBean {
 			this.saldoCuenta = saldoCuenta;
 		}
 
+		
+		
+		/**
+		 * @return the solicitudPoliza
+		 */
+		public SolicitudPoliza getSolicitudPoliza() {
+			return solicitudPoliza;
+		}
+
+		/**
+		 * @param solicitudPoliza the solicitudPoliza to set
+		 */
+		public void setSolicitudPoliza(SolicitudPoliza solicitudPoliza) {
+			this.solicitudPoliza = solicitudPoliza;
+		}
+
+		/**
+		 * @return the interes
+		 */
+		public Double getInteres() {
+			return interes;
+		}
+
+		/**
+		 * @param interes the interes to set
+		 */
+		public void setInteres(Double interes) {
+			this.interes = interes;
+		}
+
+		/**
+		 * @return the valorp
+		 */
+		public Double getValorp() {
+			return valorp;
+		}
+
+		/**
+		 * @param valorp the valorp to set
+		 */
+		public void setValorp(Double valorp) {
+			this.valorp = valorp;
+		}
+
+		/**
+		 * @return the dias
+		 */
+		public int getDias() {
+			return dias;
+		}
+
+		/**
+		 * @param dias the dias to set
+		 */
+		public void setDias(int dias) {
+			this.dias = dias;
+		}
+
 		public void handleClose(CloseEvent event) {
 			addMessage(event.getComponent().getId() + " closed", "So you don't like nature?");
 		}
@@ -728,25 +911,25 @@ public class ClientesBean {
 		 * @return Pagina en donde se realiza la Solicitud de Credito
 		 * @throws IOException
 		 */
-//		public String crearSolicitudCredito() throws IOException {
-//			System.out.println("ENTRO EN LA SOLICITUD");
-//			solicitudDeCredito.setClienteCredito(gestionUsuarios.buscarCliente(cedulaParametro));
-//			solicitudDeCredito.setEstadoCredito("Solicitando");
-//			solicitudDeCredito.setArCedula(gestionUsuarios.toByteArray(arCedula));
-//			solicitudDeCredito.setArPlanillaServicios(gestionUsuarios.toByteArray(arPlanillaServicios));
-//			solicitudDeCredito.setArRolDePagos(gestionUsuarios.toByteArray(arRolDePagos));
-//			solicitudDeCredito.setGaranteCredito(garante);
-//			solicitudDeCredito.setTasaPago(((ingresos - egresos) * 100) / ingresos);
-//			if(gestionUsuarios.verificarSolicitudSolicitando(cedulaParametro)) { 
-//				gestionUsuarios.guardarSolicitudCredito(solicitudDeCredito);
-//				addMessage("Confirmacion", "Solicitud Guardada");
-//			}else { 
-//				addMessage("Atencion", "Usted ya ha enviado una solicitud de credito para su aprovacion");
-//			}
-//			garante = new Cliente();
-//			solicitudDeCredito = new SolicitudDeCredito();
-//			return "SolicitudCredito";
-//		}
+		/*public String crearSolicitudPoliza() throws Exception {
+			System.out.println("ENTRO EN LA SOLICITUD");		
+			solicitudPoliza.setClientePoliza(gestionUsuarios.buscarCliente(cedulaParametro));
+			solicitudPoliza.setPoliza(gestionUsuarios.buscarPoliza(interes));	
+			solicitudPoliza.setEstado("S");
+			solicitudPoliza.setDias(dias);		
+			solicitudPoliza.setValorTotal(valorp);
+			//Poliza p = polizaON.guardaringresodias(dias);
+			
+			solicitudPoliza.setCedula(gestionUsuarios.toByteArray(arCedula));
+			solicitudPoliza.setPlanilla(gestionUsuarios.toByteArray(arPlanillaServicios));
+			if(gestionUsuarios.verificarSolicitudSolicitando(cedulaParametro)) { 
+				gestionUsuarios.guardarSolicitudCredito(solicitudPoliza);
+				addMessage("Confirmacion", "Solicitud ENVIADA");
+			}else { 
+				addMessage("Atencion", "Usted ya ha enviado una solicitud de POLIZA para su aprovacion");
+			}
+			return "SolicitudPoliza";
+		}*/
 //		/** 
 //		 * Metodo que permite buscar un cliente, en donde se realiza la validacion de que  
 //		 * la persona que esta realizando la solicitud de credito no puede ser garante de si misma

@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:p1="http://xmlns.jcp.org/jsf/html">
 
 <h:head>
 	<style>
@@ -12,90 +14,107 @@
 </style>
 </h:head>
 <h:body>
-	<ui:composition template="template/templateIndexCajero.xhtml">
+	<ui:composition template="template/templateIndexCLiente.xhtml">
 		<ui:define name="title">LISTADO DE LAS POLIZAS DISPONIBLES </ui:define>
-		<ui:param name="nombre" value="#{loginBean.usuario}" />
+		<ui:param name="nombre"
+			value="#{clientesBean.buscarCuentaDeAhorro.cliente.nombre}" />
 		<ui:define name="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-primary">
+							
+							<div class="panel-body">
+								<p:growl id="messages" showDetail="true" class="ui-growl"
+									life="5000" />
+								<h:form enctype="multipart/form-data">
+									<h:dataTable value="#{polizasBean.getListasPolizas()}"
+										var="poliza" class="table">
 
 
-			<h:form id="mainForm">
-				<h:dataTable value="#{polizasBean.getListasPolizas()}" var="poliza"
-					class="table">
+										<h:column headerText="Dia minimo">
+											<f:facet name="header">Dia minimo</f:facet>
+											<h:outputText value="#{poliza.diasMinimo}" />
+										</h:column>
 
+										<h:column headerText="Dia Maximo">
+											<f:facet name="header">Dia maximo</f:facet>
+											<h:outputText value="#{poliza.diasMaximo}" />
+										</h:column>
 
-					<h:column headerText="Dia minimo">
-						<f:facet name="header">Dia minimo</f:facet>
-						<h:outputText value="#{poliza.diasMinimo}" />
-					</h:column>
-
-					<h:column headerText="Dia Maximo">
-						<f:facet name="header">Dia maximo</f:facet>
-						<h:outputText value="#{poliza.diasMaximo}" />
-					</h:column>
-
-					<h:column headerText="Tasa de Interes %">
-						<f:facet name="header">Tasa de interes %</f:facet>
-						<h:outputText value="#{poliza.tasaInteres}" />
-					</h:column>
+										<h:column headerText="Tasa de Interes %">
+											<f:facet name="header">Tasa de interes %</f:facet>
+											<h:outputText value="#{poliza.tasaInteres}" />
+										</h:column>
 
 
 
-				</h:dataTable>
-			</h:form>
+									</h:dataTable>
+								</h:form>
 
-			<h:form id="mainForm1" value="#{polizasBean.getListasPolizas()}"
-				var="poliza">
-				<div class="form-group">
-					<label>Ingrese Cedula</label>
-					<h:inputText id="cedddd" value="#{cajeroBean.cliente.cedula}"
-						maxlength="10" class="form-control">
-						<f:ajax event="blur" render="Datos Cuenta panel Monto"
-							execute="dep ret caj #{cajeroBean.cargarTransacciones()}" />
-					</h:inputText>
-					<br /> <label>Cliente:</label><br />
-					<h:outputText id="Datos" value="#{cajeroBean.valCedula()}" />
-					<br /> <label>Numero de Cuenta:</label><br />
-					<h:outputText id="Cuenta" value="#{cajeroBean.numCuenta()}" />
+							
+								<h:form role=" form" id="solicitud">
+
+									<div class="form-group">
+									<div class="panel-heading">DATOS DE LA SOLICITUD DE POLIZA</div>
+								
+										<label>Ingrese dias</label>
+										<h:inputText value="#{clientesBean.solicitudPoliza.dias}" maxlength="10"
+											class="form-control" required="true">
+										</h:inputText>
+									</div>
+									<div class="form-group">
+										<label>Ingrese valor de Poliza</label>
+										<h:inputText value="#{clientesBean.solicitudPoliza.monto}"
+											maxlength="10" class="form-control" required="true">
+											<f:ajax event="blur" render="valueError" />
+										</h:inputText>
+										<div class="form-group">
+											<label>Cargar cedula&nbsp; &nbsp;</label>
+											<p:fileUpload listener="#{clientesBean.archivo1}"
+												mode="advanced" update="messages" auto="true"
+												sizeLimit="10485760" label="Elegir Archivo"
+												uploadLabel="Cargar" required="true"
+												requiredMessage="Archivo no seleccionado" />
+										</div>
+										<br /> <br />
+										<div class="form-group">
+											<label>Cargar respaldos de servicios basicos&nbsp; &nbsp;</label>
+
+											<p:fileUpload listener="#{clientesBean.archivo2}"
+												mode="advanced" update="messages" auto="true"
+												sizeLimit="10485760" label="Elegir Archivo"
+												uploadLabel="Cargar" required="true"
+												requiredMessage="Archivo no seleccionado" />
+										</div>
+
+										 
+									</div>
+
+									<p:commandButton value="Guardar Solicitud de Credito"
+										action="#{clientesBean.crearSolicitudPoliza()}"
+										update="messages" class="btn btn-success btn-lg">
+										<p:confirm header="Confirmacion"
+											message="¿Desea guardar la solicitud de credito?"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+										<p:commandButton value="SI" type="button"
+											styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+										<p:commandButton value="NO" type="button"
+											styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+									</p:confirmDialog>
+
+								</h:form>
+							</div>
+
+							<br />
+						</div>
+					</div>
 				</div>
-			</h:form>
-			<h:form role=" form" id="solicitud">
-
-				<div class="form-group">
-					<label>Ingrese dias</label>
-					<h:inputText value="" maxlength="10" class="form-control"
-						required="true">
-					</h:inputText>
-				</div>
-				<div class="form-group">
-					<label>Ingrese valor de Poliza</label>
-					<h:inputText value="#{polizasBean.poliza.diasMaximo}"
-						maxlength="10" class="form-control" required="true">
-						<f:ajax event="blur" render="valueError" />
-					</h:inputText>
-					<h:commandButton value="Subir Cedula"
-						actionListener="#{cajeroBean.registrar()}" update="message"
-						class="btn btn-success btn-lg">
-
-					</h:commandButton><br /><br />
-					<h:commandButton value="Subir Plantilla"
-						actionListener="#{cajeroBean.registrar()}" update="message"
-						class="btn btn-success btn-lg">
-
-					</h:commandButton><br /><br />
-					<h:commandButton value="Solicitar Poliza"
-						actionListener="#{cajeroBean.registrar()}" update="message"
-						class="btn btn-success btn-lg">
-
-					</h:commandButton>
-					<br />
-					<br /> <label>Interes por dias:</label><br />
-					<h:outputText id="tasa" value="#{polizasBean.poliza.tasaInteres}" /><br />
-
-					<br /> <label>Monto a Pagar:</label><br />
-					<h:outputText id="Datos1" value="" />
-				</div>
-
-			</h:form>
+			</div>
 		</ui:define>
 	</ui:composition>
 </h:body>

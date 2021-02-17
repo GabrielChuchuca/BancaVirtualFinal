@@ -52,6 +52,8 @@ public class CajeroBean {
 	
 	private Transaccion transaccionAux;
 	
+	
+
 	private PieChartModel pieModel;
 	
 	private boolean grafica;
@@ -71,8 +73,7 @@ public class CajeroBean {
 	public void setClienteON(GestionUsuarioLocal clienteON) {
 		this.clienteON = clienteON;
 	}
-
-	/**
+		/**
 	 * Metodo para obtener un Monto
 	 * 
 	 * @return Me devuelve un valor de una transaccion

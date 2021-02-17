@@ -31,6 +31,10 @@ public class PolizaDAO {
 		public Poliza read(int id) {
 			return em.find(Poliza.class, id);
 		}
+		
+		public Poliza buscarpor(Double interes) {
+			return em.find(Poliza.class, interes);
+		}
 
 		public void delete(int id) {
 			Poliza p = read(id);
@@ -44,10 +48,12 @@ public class PolizaDAO {
 			return q.getResultList();
 		} 
 		
-		public Poliza validardias(int dia) throws Exception {
-			String tl = "select s from Polia s where "+dia+">= s.diasminimo AND "+dia+" <= s.diasmaximo";
+		public Poliza validardias(int dia) throws Exception { 
+			System.out.println("********************************************************************INICIO DE METODO");
+			String tl = "select po from poliza po where "+dia+" BETWEEN po.diasminimo AND po.diasmaximo";
 			try {
 				String jpql = tl;
+				System.out.println("--------------------------------------------------------------------------"+jpql);
 				Query q = em.createQuery(jpql, Poliza.class);
 				return (Poliza)q.getSingleResult();
 			} catch (NoResultException e) {
@@ -55,4 +61,6 @@ public class PolizaDAO {
 			}
 
 		}
+		
+		
 }

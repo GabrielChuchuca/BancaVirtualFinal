@@ -13,16 +13,15 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class Poliza implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Poliza implements Serializable { 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idp")
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int idp;
 	private int diasMaximo;
-
 	private int diasMinimo;
 	private double tasaInteres;
+
+	private static final long serialVersionUID = 1L;
 
 	public Poliza() {
 	}
@@ -58,5 +57,20 @@ public class Poliza implements Serializable {
 	public void setTasaInteres(double tasaInteres) {
 		this.tasaInteres = tasaInteres;
 	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "Poliza [idp=" + idp + ", diasMaximo=" + diasMaximo + ", diasMinimo=" + diasMinimo + ", tasaInteres="
+				+ tasaInteres + "]";
+	}
+	
+	
 
 }
