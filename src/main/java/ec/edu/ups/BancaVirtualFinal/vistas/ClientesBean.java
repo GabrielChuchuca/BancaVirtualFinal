@@ -217,11 +217,14 @@ public class ClientesBean {
 		public String crearSolicitudPoliza() throws Exception {
 			System.out.println("ENTRO EN LA SOLICITUD");		
 			solicitudPoliza.setCliente(gestionUsuarios.buscarCliente(buscarCuentaDeAhorro.getCliente().getCedula()));
-			solicitudPoliza.setPoliza(gestionUsuarios.guardaringresodias(dias));	
+			System.out.println("++++++++++++++++++++++++++"+solicitudPoliza.getCliente().toString());
+			solicitudPoliza.setPoliza(gestionUsuarios.guardaringresodias(solicitudPoliza.getDias()));	
+			
+			System.out.println("*****************7/7/48+++++++++++++"+solicitudPoliza.getPoliza().toString());
 			solicitudPoliza.setEstado("S");
-			solicitudPoliza.setDias(35);		
-			solicitudPoliza.setMonto(solicitudPoliza.getMonto());
-			//Poliza p = polizaON.guardaringresodias(dias);
+			solicitudPoliza.setDias(solicitudPoliza.getDias());		
+			System.out.println("///////////////dias////////"+solicitudPoliza.getDias());
+			solicitudPoliza.setMonto(solicitudPoliza.getMonto()); 
 			
 			solicitudPoliza.setCedula(gestionUsuarios.toByteArray(arCedula));
 			solicitudPoliza.setPlanilla(gestionUsuarios.toByteArray(arPlanillaServicios));

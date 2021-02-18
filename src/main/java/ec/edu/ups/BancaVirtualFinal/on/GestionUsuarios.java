@@ -49,17 +49,12 @@ import ec.edu.ups.BancaVirtualFinal.modelo.TransferenciaLocal;
 import ec.edu.ups.BancaVirtualFinal.services.Respuesta;
 import ec.edu.ups.BancaVirtualFinal.services.RespuestaTransferenciaExterna;
 
-
-
-
-
-
 /**
  * @author ADMINX
  *
  */
 @Stateless
-public class GestionUsuarios implements GestionUsuarioLocal{
+public class GestionUsuarios implements GestionUsuarioLocal {
 	@Inject
 	private ClienteDAO clienteDAO;
 	@Inject
@@ -78,9 +73,9 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 	@Inject
 	private PolizaDAO polizaDAO;
 
-	@Inject 
+	@Inject
 	private TransferenciaExternaDAO transferenciaExternaDAO;
-	
+
 	private int contf = 0;
 
 	public String generarNumeroDeCuenta() {
@@ -157,21 +152,21 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 			System.out.println(ex.getMessage());
 		}
 	}
-	
+
 	public Poliza buscarPoliza(Double interes) {
-		 Poliza p = polizaDAO.buscarpor(interes);
-		 return p;
-		
+		Poliza p = polizaDAO.buscarpor(interes);
+		return p;
+
 	}
-	
+
 	public void guardarSolicitudPoliza(SolicitudPoliza solicituPolizas) throws Exception {
-		
+
 		Poliza poliza = polizaDAO.validardias(solicituPolizas.getDias());
-		Cliente cliente= clienteDAO.read(solicituPolizas.getCliente().getCedula());
+		Cliente cliente = clienteDAO.read(solicituPolizas.getCliente().getCedula());
 		solicituPolizas.setDias(solicituPolizas.getDias());
 		solicituPolizas.setMonto(solicituPolizas.getMonto());
 		solicituPolizas.setCliente(cliente);
-		solicituPolizas.setEstado("S");		
+		solicituPolizas.setEstado("S");
 		solicituPolizas.setPoliza(poliza);
 		try {
 			solicitudPolizaDAO.insert(solicituPolizas);
@@ -180,6 +175,7 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 			e.printStackTrace();
 		}
 	}
+
 	public boolean verificarSolicitudSolicitando(String numerocu) {
 		List<SolicitudPoliza> solicitudes = solicitudPolizaDAO.getSolicitudPolizas();
 		for (SolicitudPoliza solicitudDeCredito : solicitudes) {
@@ -258,7 +254,8 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 		List<Cliente> clientes = clienteDAO.getClientesBloqueados();
 		return clientes;
 	}
-	//ESTE METODO DEVUELVE UNA POLIZA CON EL INTERES SEGUN EL DIA
+
+	// ESTE METODO DEVUELVE UNA POLIZA CON EL INTERES SEGUN EL DIA
 	public Poliza guardaringresodias(int dias) throws Exception {
 		Poliza po = polizaDAO.validardias(dias);
 		if (po != null) {
@@ -267,7 +264,7 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 			return null;
 		}
 	}
-	
+
 	public byte[] toByteArray(InputStream in) throws IOException {
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -283,17 +280,15 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 
 		return os.toByteArray();
 	}
-	/*public boolean verificarSolicitudSolicitando(String numerocu) {
-		List<SolicitudPoliza> solicitudes = solicitudPolizaDAO.getSolicitudPolizas();
-		for (SolicitudPoliza solicitudDeCredito : solicitudes) {
-			if (solicitudDeCredito.getEstado().equalsIgnoreCase("S")
-					&& solicitudDeCredito.getCuenta().getNumeroCuentaDeAhorro().equalsIgnoreCase(numerocu)) {
-				return false;
-			}
-		}
-		return true;
-	}*/
-	
+	/*
+	 * public boolean verificarSolicitudSolicitando(String numerocu) {
+	 * List<SolicitudPoliza> solicitudes = solicitudPolizaDAO.getSolicitudPolizas();
+	 * for (SolicitudPoliza solicitudDeCredito : solicitudes) { if
+	 * (solicitudDeCredito.getEstado().equalsIgnoreCase("S") &&
+	 * solicitudDeCredito.getCuenta().getNumeroCuentaDeAhorro().equalsIgnoreCase(
+	 * numerocu)) { return false; } } return true; }
+	 */
+
 	public void guardarCuentaDeAhorros(CuentaDeAhorro c) {
 		Cliente cliente = clienteDAO.read(c.getCliente().getCedula());
 		if (cliente == null) {
@@ -637,20 +632,23 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 	public void guardarTransferenciaLocal(TransferenciaLocal transferenciaLocal) {
 		transferenciaLocalDAO.insert(transferenciaLocal);
 	}
-	
+
 	/**
-	 * Metodo que permite dar acceso al cliente en la aplicación móvil mediante un servicio web.
+	 * Metodo que permite dar acceso al cliente en la aplicación móvil mediante un
+	 * servicio web.
 	 * 
 	 * @param username El nombre de usuario del cliente que se envio en el correo.
-	 * @param password La contraseña del cliente que se envio en el correo de creación de la cuenta.
-	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso, con un codigo, una descripción.
+	 * @param password La contraseña del cliente que se envio en el correo de
+	 *                 creación de la cuenta.
+	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso,
+	 *         con un codigo, una descripción.
 	 * @throws Exception Excepción por si sucede algún error en el proceso.
 	 */
 	public Respuesta loginServicio(String username, String password) {
 		Cliente cliente = new Cliente();
 		Respuesta respuesta = new Respuesta();
 		CuentaDeAhorro cuentaDeAhorro = new CuentaDeAhorro();
-		//List<Credito> lstCreditos = new ArrayList<Credito>();
+		// List<Credito> lstCreditos = new ArrayList<Credito>();
 		try {
 			cliente = clienteDAO.obtenerClienteUsuarioContraseña(username, password);
 			if (cliente != null) {
@@ -659,20 +657,20 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 				respuesta.setCliente(cliente);
 				cuentaDeAhorro = cuentaDeAhorroDAO.getCuentaCedulaCliente(cliente.getCedula());
 				respuesta.setCuentaDeAhorro(cuentaDeAhorro);
-				/*lstCreditos = creditosAprovados(cliente.getCedula());
-				List<CreditoRespuesta> lstNuevaCreditos = new ArrayList<CreditoRespuesta>();
-				for (Credito credito : lstCreditos) {
-					CreditoRespuesta creditoRespuesta = new CreditoRespuesta();
-					creditoRespuesta.setCodigoCredito(credito.getCodigoCredito());
-					creditoRespuesta.setEstado(credito.getEstado());
-					creditoRespuesta.setMonto(credito.getMonto());
-					creditoRespuesta.setInteres(credito.getInteres());
-					creditoRespuesta.setFechaRegistro(credito.getFechaRegistro());
-					creditoRespuesta.setFechaVencimiento(credito.getFechaVencimiento());
-					creditoRespuesta.setDetalles(credito.getDetalles());
-					lstNuevaCreditos.add(creditoRespuesta);
-				}
-				respuesta.setListaCreditos(lstNuevaCreditos);*/
+				/*
+				 * lstCreditos = creditosAprovados(cliente.getCedula()); List<CreditoRespuesta>
+				 * lstNuevaCreditos = new ArrayList<CreditoRespuesta>(); for (Credito credito :
+				 * lstCreditos) { CreditoRespuesta creditoRespuesta = new CreditoRespuesta();
+				 * creditoRespuesta.setCodigoCredito(credito.getCodigoCredito());
+				 * creditoRespuesta.setEstado(credito.getEstado());
+				 * creditoRespuesta.setMonto(credito.getMonto());
+				 * creditoRespuesta.setInteres(credito.getInteres());
+				 * creditoRespuesta.setFechaRegistro(credito.getFechaRegistro());
+				 * creditoRespuesta.setFechaVencimiento(credito.getFechaVencimiento());
+				 * creditoRespuesta.setDetalles(credito.getDetalles());
+				 * lstNuevaCreditos.add(creditoRespuesta); }
+				 * respuesta.setListaCreditos(lstNuevaCreditos);
+				 */
 			}
 		} catch (Exception e) {
 			respuesta.setCodigo(2);
@@ -680,13 +678,15 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 		}
 		return respuesta;
 	}
-	
-	
+
 	/**
-	 * Metodo que permite obtener un cliente para el proceso de transacciones o transferencias.
+	 * Metodo que permite obtener un cliente para el proceso de transacciones o
+	 * transferencias.
 	 * 
-	 * @param numeroCuenta El numero de cuenta de la persona a la que se hace la transaccion o transferencia.
-	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso, con un codigo, una descripción.
+	 * @param numeroCuenta El numero de cuenta de la persona a la que se hace la
+	 *                     transaccion o transferencia.
+	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso,
+	 *         con un codigo, una descripción.
 	 * @throws Exception Excepción por si sucede algún error en el proceso.
 	 */
 	public Respuesta obtenerClienteCuentaAhorro(String numeroCuenta) {
@@ -707,17 +707,20 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 		}
 		return respuesta;
 	}
-	
+
 	/**
-	 * Metodo que permite cambiar la contraseña del cliente en la aplicación móvil mediante un servicio web.
+	 * Metodo que permite cambiar la contraseña del cliente en la aplicación móvil
+	 * mediante un servicio web.
 	 * 
-	 * @param correo El correo del cliente que describio cuando creo una cuenta de ahorros.
+	 * @param correo        El correo del cliente que describio cuando creo una
+	 *                      cuenta de ahorros.
 	 * @param contraAntigua La contraseña del cliente antigua.
-	 * @param contraActual La contraseña del cliente nueva.
-	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso, con un codigo, una descripción.
+	 * @param contraActual  La contraseña del cliente nueva.
+	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso,
+	 *         con un codigo, una descripción.
 	 * @throws Exception Excepción por si sucede algún error en el proceso.
 	 */
-	
+
 	public Respuesta cambioContraseña(String correo, String contraAntigua, String contraActual) {
 		System.out.println(correo + "" + contraAntigua);
 		Cliente cliente = new Cliente();
@@ -728,7 +731,7 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 			cliente.setClave(contraActual);
 			clienteDAO.update(cliente);
 			respuesta.setCodigo(1);
-			respuesta.setDescripcion("Se ha actualizado su contraseña exitosamente"); 
+			respuesta.setDescripcion("Se ha actualizado su contraseña exitosamente");
 			cambioContrasena(cliente);
 		} catch (Exception e) {
 			respuesta.setCodigo(2);
@@ -736,19 +739,22 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 		}
 
 		return respuesta;
-	} 
-	
+	}
+
 	/**
 	 * Metodo que permite realizar una transferencia
 	 * 
-	 * @param cedula Numero de cedula de la persona que hace la transferencia.
-	 * @param cuentaAhorro2 El numero de cuenta de la persona a la que se hace la transferencia.
-	 * @param monto El valor de la transferencia.
-	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso, con un codigo, una descripción.
+	 * @param cedula        Numero de cedula de la persona que hace la
+	 *                      transferencia.
+	 * @param cuentaAhorro2 El numero de cuenta de la persona a la que se hace la
+	 *                      transferencia.
+	 * @param monto         El valor de la transferencia.
+	 * @return Un clase Respuesta indicando los datos del desarrollo del proceso,
+	 *         con un codigo, una descripción.
 	 * @throws Exception Excepción por si sucede algún error en el proceso.
 	 */
 	public Respuesta realizarTransferencia(String cedula, String cuentaAhorro2, double monto) {
-		Respuesta respuesta = new Respuesta(); 
+		Respuesta respuesta = new Respuesta();
 		CuentaDeAhorro cuentaAhorro = cuentaDeAhorroDAO.getCuentaCedulaCliente(cedula);
 		CuentaDeAhorro cuentaAhorroTransferir = cuentaDeAhorroDAO.read(cuentaAhorro2);
 		try {
@@ -761,56 +767,61 @@ public class GestionUsuarios implements GestionUsuarioLocal{
 				transfereciaLocal.setCliente(cuentaAhorro.getCliente());
 				transfereciaLocal.setCuentaDeAhorroDestino(cuentaAhorroTransferir);
 				transfereciaLocal.setMonto(monto);
-				guardarTransferenciaLocal(transfereciaLocal); 
-				respuesta.setCodigo(1); 
+				guardarTransferenciaLocal(transfereciaLocal);
+				respuesta.setCodigo(1);
 				respuesta.setDescripcion("Transferencia Satisfactoria");
-			} else { 
-				respuesta.setCodigo(2); 
+			} else {
+				respuesta.setCodigo(2);
 				respuesta.setDescripcion("Monto Excedido");
 			}
 		} catch (Exception e) {
-			respuesta.setCodigo(3); 
+			respuesta.setCodigo(3);
 			respuesta.setDescripcion(e.getMessage());
-		} 
+		}
 		return respuesta;
 	}
-	
+
 	/**
-	 * Método que permite realizar una transferencia externa en la aplicación móvil mediante un servicio web.
+	 * Método que permite realizar una transferencia externa en la aplicación móvil
+	 * mediante un servicio web.
 	 * 
-	 * @param transferenciaExterna Una clase TransferenciaExterna que se envia en formato json  mediante el servicio web.
-	 * @return Un clase RespuestaTransferenciaExterna indicando los datos del desarrollo del proceso, con un codigo, una descripción.
+	 * @param transferenciaExterna Una clase TransferenciaExterna que se envia en
+	 *                             formato json mediante el servicio web.
+	 * @return Un clase RespuestaTransferenciaExterna indicando los datos del
+	 *         desarrollo del proceso, con un codigo, una descripción.
 	 * @throws Exception Excepción por si sucede algún error en el proceso.
 	 */
-	public RespuestaTransferenciaExterna realizarTransferenciaExterna(TransferenciaExterna transferenciaExterna) {  
+	public RespuestaTransferenciaExterna realizarTransferenciaExterna(TransferenciaExterna transferenciaExterna) {
 		RespuestaTransferenciaExterna respuestaTransferenciaExterna = new RespuestaTransferenciaExterna();
-		try {  
-			CuentaDeAhorro cuentaDeAhorro = cuentaDeAhorroDAO.read(transferenciaExterna.getCuentaPersonaLocal()); 
-			if(cuentaDeAhorro!=null) { 
-				if(cuentaDeAhorro.getSaldoCuentaDeAhorro()>=transferenciaExterna.getMontoTransferencia()) { 
+		try {
+			CuentaDeAhorro cuentaDeAhorro = cuentaDeAhorroDAO.read(transferenciaExterna.getCuentaPersonaLocal());
+			if (cuentaDeAhorro != null) {
+				if (cuentaDeAhorro.getSaldoCuentaDeAhorro() >= transferenciaExterna.getMontoTransferencia()) {
 					transferenciaExterna.setFechaTransaccion(new Date());
-					transferenciaExternaDAO.insert(transferenciaExterna);  
-					cuentaDeAhorro.setSaldoCuentaDeAhorro(cuentaDeAhorro.getSaldoCuentaDeAhorro()-transferenciaExterna.getMontoTransferencia()); 
+					transferenciaExternaDAO.insert(transferenciaExterna);
+					cuentaDeAhorro.setSaldoCuentaDeAhorro(
+							cuentaDeAhorro.getSaldoCuentaDeAhorro() - transferenciaExterna.getMontoTransferencia());
 					cuentaDeAhorroDAO.update(cuentaDeAhorro);
-					respuestaTransferenciaExterna.setCodigo(1); 
-					respuestaTransferenciaExterna.setDescripcion("Transferencia se ha realizado exitosamente"); 
-				}else { 
+					respuestaTransferenciaExterna.setCodigo(1);
+					respuestaTransferenciaExterna.setDescripcion("Transferencia se ha realizado exitosamente");
+				} else {
 					respuestaTransferenciaExterna.setCodigo(2);
 					respuestaTransferenciaExterna.setDescripcion("No tiene esa cantidad en su cuenta");
 				}
-			}else { 
-				respuestaTransferenciaExterna.setCodigo(3); 
+			} else {
+				respuestaTransferenciaExterna.setCodigo(3);
 				respuestaTransferenciaExterna.setDescripcion("La cuenta no existe");
 			}
-		}catch (Exception e) {
-			respuestaTransferenciaExterna.setCodigo(4); 
+		} catch (Exception e) {
+			respuestaTransferenciaExterna.setCodigo(4);
 			respuestaTransferenciaExterna.setDescripcion("Error : " + e.getMessage());
 		}
 		return respuestaTransferenciaExterna;
 	}
-	
+
 	/**
-	 * Metodo que permite indicar los datos para enviar mediante el correo el mensaje de cambio de contraseña.
+	 * Metodo que permite indicar los datos para enviar mediante el correo el
+	 * mensaje de cambio de contraseña.
 	 * 
 	 * @param cliente Una clase Cliente con los datos del cliente.
 	 * @throws Exception Excepción por si sucede algún error en el proceso de envio.

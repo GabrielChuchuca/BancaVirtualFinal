@@ -1,12 +1,9 @@
 package ec.edu.ups.BancaVirtualFinal.services;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ec.edu.ups.BancaVirtualFinal.modelo.Cliente;
 import ec.edu.ups.BancaVirtualFinal.modelo.CuentaDeAhorro;
-
 
 
 public class Respuesta {

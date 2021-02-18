@@ -144,6 +144,14 @@ public class Cliente implements Serializable {
 		}
 		public void setFechaNacimiento(Date fechaNacimiento) {
 			this.fechaNacimiento = fechaNacimiento;
+		}
+
+		@Override
+		public String toString() {
+			return "Cliente [cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion="
+					+ direccion + ", telefono1=" + telefono1 + ", telefono2=" + telefono2 + ", correo=" + correo
+					+ ", fechaNacimiento=" + fechaNacimiento + ", usuario=" + usuario + ", clave=" + clave + ", estado="
+					+ estado + "]";
 		} 
 
 }

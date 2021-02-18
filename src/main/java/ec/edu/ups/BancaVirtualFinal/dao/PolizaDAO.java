@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ec.edu.ups.BancaVirtualFinal.modelo.Poliza;
+import ec.edu.ups.BancaVirtualFinal.modelo.Transaccion;
 
 /**
  * @author ADMINX
@@ -49,14 +50,19 @@ public class PolizaDAO {
 		} 
 		
 		public Poliza validardias(int dia) throws Exception { 
+
+			System.out.println("VALOR DE INGRESO >> "+dia);
 			System.out.println("********************************************************************INICIO DE METODO");
 			String tl = "select po from poliza po where "+dia+" BETWEEN po.diasminimo AND po.diasmaximo";
 			try {
 				String jpql = tl;
 				System.out.println("--------------------------------------------------------------------------"+jpql);
-				Query q = em.createQuery(jpql, Poliza.class);
-				return (Poliza)q.getSingleResult();
+				//Query q = em.createQuery(jpql, Poliza.class);
+				Query q= em.createNativeQuery(jpql, Poliza.class);
+				//(Poliza)q.getSingleResult();
+				return null;
 			} catch (NoResultException e) {
+				System.out.println("ERORRE--------------+++++++++++++++++");
 				throw new Exception("Erro Consultas Entre Fechas");
 			}
 

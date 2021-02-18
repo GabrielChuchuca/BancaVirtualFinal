@@ -80,6 +80,7 @@ public class TransaccionDAO {
 		try {
 			String jpql = tl;
 			Query q = em.createQuery(jpql, Transaccion.class);
+			
 			//q.setParameter("ced", cedula);
 			//q.setParameter("fcI", fechI);
 			//q.setParameter("fcF", fechaF);

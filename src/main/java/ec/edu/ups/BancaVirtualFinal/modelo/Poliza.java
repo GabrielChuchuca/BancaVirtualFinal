@@ -16,6 +16,8 @@ import javax.persistence.Id;
 public class Poliza implements Serializable { 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+
+	@Column(name="idp")
 	private int idp;
 	private int diasMaximo;
 	private int diasMinimo;
@@ -70,6 +72,7 @@ public class Poliza implements Serializable {
 		return "Poliza [idp=" + idp + ", diasMaximo=" + diasMaximo + ", diasMinimo=" + diasMinimo + ", tasaInteres="
 				+ tasaInteres + "]";
 	}
+ 
 	
 	
 
